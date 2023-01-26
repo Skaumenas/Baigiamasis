@@ -6,16 +6,12 @@ import matplotlib.pyplot as plt
 import csv
 
 # pagrindinis langas jo dydis pavadinimas parametrai
-# --------------------------------------------------
 root = tk.Tk()
 root.title("Baigimasis projektas")
 root.geometry("1480x720")
 root.pack_propagate(False)
 root.resizable(0, 0)
-# --------------------------------------------------
 
-
-# -------------------------------------------------------------------------------------------------
 # Remeliai
 remelis1 = tk.LabelFrame(root, text="Excel Data")
 remelis1.place(height=600, width=700)
@@ -64,6 +60,7 @@ treescrolly2.pack(side="right", fill="y")
 
 
 def help():
+    # Informacija paspaudus help mygtuka
     tk.messagebox.showinfo("Information", f"This project created by Dovydas Skauminas as final project at CodeAcademy\n"
                                           f"Functionality:\n"
                                           f"1. To load a csv file you need to click on 'Browse a file' button and select a wanted csv file\n"
@@ -78,10 +75,8 @@ def help():
                                           f"10. To plot data click 'Show PlotMenu' button then seleck values and click 'Make a plot' button\n")
 
 
-# -------------------------------------------------------------------------------------------------
-# Mygtukas ir label funkcijoje, del update galimybes
-# -------------------------------------------------------------------------------------------------
 def show():
+    # Mygtukas ir label funkcijoje, del update galimybes
     mygtukas3 = tk.Button(file_remelis1, text="Show PlotMenu",
                           command=lambda: [diagrama(), mygtukas3.destroy(), label.destroy()])
     mygtukas3.place(rely=0.8, relx=0.01)
@@ -95,12 +90,8 @@ def show():
 show()
 
 
-# -------------------------------------------------------------------------------------------------
-
-
-# Pakeisti lasteles duomenis
-# -------------------------------------------------------------------------------------------------
 def edit(event):
+    # Pakeisti lasteles duomenis
     objektas = tree2.identify('item', event.x, event.y)
     stulpelis = tree2.identify_column(event.x)
     value = tree2.item(objektas, "values")[int(stulpelis[1]) - 1]
@@ -112,24 +103,17 @@ def edit(event):
 tree2.bind("<Double-1>", edit)
 
 
-# -------------------------------------------------------------------------------------------------
-
-
-# Funkcija kuri paspaudus mygtuka ijungs operacines sistemos failu narsykle
-# -------------------------------------------------------------------------------------------------
 def failo_narsykle():
+    # Funkcija kuri paspaudus mygtuka ijungs operacines sistemos failu narsykle
     pavadinimas = filedialog.askopenfilename(initialdir="/",
-                                          title="Select A File",
-                                          filetype=(("csv files", "*.csv"), ("All Files", "*.*")))
+                                             title="Select A File",
+                                             filetype=(("csv files", "*.csv"), ("All Files", "*.*")))
     label_file["text"] = pavadinimas
     return None
 
 
-# -------------------------------------------------------------------------------------------------
-
-# Funkcija kuri paspaudus mygtuka ikelia visus csv duomenis i treeview perziura
-# -------------------------------------------------------------------------------------------------
 def ikelti_failus(arg):
+    # Funkcija kuri paspaudus mygtuka ikelia visus csv duomenis i treeview perziura
     vieta = label_file["text"]
     try:
         pavadinimas = r"{}".format(vieta)
@@ -159,11 +143,8 @@ def ikelti_failus(arg):
     return None
 
 
-# -------------------------------------------------------------------------------------------------
-
-# Funkcija turinti daug paskirciu, ji leidzia piesti plot ir pasirinkti pagal kokius duomenis piesti
-# -------------------------------------------------------------------------------------------------
 def diagrama():
+    # Funkcija turinti daug paskirciu, ji leidzia piesti plot ir pasirinkti pagal kokius duomenis piesti
     try:
         # mygtukai, label option menus
         csv = pd.read_csv(f"{label_file['text']}")
@@ -202,6 +183,7 @@ def diagrama():
         mygtukas.place(rely=0.8, relx=0.01)
 
         def gauti():
+            # Funkcija kuri gauna is vartotojo paspausta reiksme
             a = clickedx.get()
             if a == "None":
                 a = None
@@ -253,6 +235,7 @@ def diagrama():
         diagramosbutton.place(rely=0.8, relx=0.5)
 
         def istrink():
+            # Istrina pries tai esancius widgets
             xlabel.destroy()
             ylabel.destroy()
             huelabel.destroy()
@@ -269,18 +252,14 @@ def diagrama():
         return None
 
 
-# -------------------------------------------------------------------------------------------------
-
 def clear_data():
     tree1.delete(*tree1.get_children())
     tree2.delete(*tree2.get_children())
     return None
 
 
-# -------------------------------------------------------------------------------------------------
-# Funkcija kuri paspaudus mygtuka Open file in editor atidaro faila i tree2 ir parodo Edit mygtukus
-# -------------------------------------------------------------------------------------------------
 def pasirinkt():
+    # Funkcija kuri paspaudus mygtuka Open file in editor atidaro faila i tree2 ir atidaro Edit mygtukus
     add_button = tk.Button(remelis33, text="Add Cell", command=lambda: add_cell())
     add_button.place(rely=0.05, relx=0.55)
     labelis = tk.Label(remelis33, text="Search: ")
@@ -296,10 +275,8 @@ def pasirinkt():
     entry = tk.Entry(remelis33)
     entry.place(height=25, width=200, rely=0.06, relx=0.10)
 
-    # -------------------------------------------------------------------------------------------------
-    # Surasti faila excel data editor label
-    # -------------------------------------------------------------------------------------------------
     def find_object():
+        # Surasti faila excel data editor label
         paieska = entry.get()  # gauna teksta is entry
         for i in tree2.get_children():
             duomenys = tree2.item(i)
@@ -311,10 +288,8 @@ def pasirinkt():
         messagebox.showerror("Error", "Object not found.")
 
 
-# -------------------------------------------------------------------------------------------------
-# Funkcija kuri leidzia pasinikta lastele tree2 treeview, paspaudus Delete mygtuka, istrina lastele
-# -------------------------------------------------------------------------------------------------
 def delete_cell():
+    # Funkcija kuri leidzia pasirikta lastele tree2 treeview, paspaudus Delete mygtuka, istrina lastele
     pasirinkimas = tree2.selection()
     if not pasirinkimas:
         messagebox.showinfo("Error", "No cell is selected. Please select a cell to delete.")
@@ -327,10 +302,8 @@ def delete_cell():
                 tree2.delete(gauti)
 
 
-# -------------------------------------------------------------------------------------------------
-# Funkcija kuri leidzia issaugoti tree2 treeview esancius duomenis i csv faila
-# -------------------------------------------------------------------------------------------------
 def export_csv():
+    # Funkcija kuri leidzia issaugoti tree2 treeview esancius duomenis i csv faila
     pavadinimas = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV", "*.csv")])
     if pavadinimas:
         with open(pavadinimas, 'w', newline='') as f:
@@ -343,20 +316,16 @@ def export_csv():
         messagebox.showinfo("Success", "Data saved successfully to " + pavadinimas)
 
 
-# -------------------------------------------------------------------------------------------------
-# Funkcija leidzianti paspaudus Add cell mygtuka prideti nauja lastele tree2 treeview
-# -------------------------------------------------------------------------------------------------
 def add_cell():
+    # Funkcija leidzianti paspaudus Add cell mygtuka prideti nauja lastele tree2 treeview
     nauji_duomenys = simpledialog.askstring("Add cell", "Enter the values for the new row, separated by commas")
     if nauji_duomenys:
         new_values = nauji_duomenys.split(",")
         tree2.insert("", "end", values=new_values)
 
 
-# -------------------------------------------------------------------------------------------------
-# Funkcija kuri atvaizuoja tik ivestus duomenis
-# -------------------------------------------------------------------------------------------------
 def filter_data():
+    # Funkcija kuri atvaizuoja tik ivestus duomenis
     stulpelis = simpledialog.askstring("Show data", "Enter the column name")
     reiksme = simpledialog.askstring("Show data", "Enter the value")
     if stulpelis and reiksme:
