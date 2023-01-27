@@ -89,6 +89,18 @@ def edit(event):
 tree2.bind("<Double-1>", edit)
 
 
+def tree2_on_double_click(event):
+    item = tree2.identify('item', event.x, event.y)
+    column = tree2.identify_column(event.x)
+    current_value = tree2.item(item, "values")[int(column[1]) - 1]
+    new_value = simpledialog.askstring("Edit cell", "Enter the new value", initialvalue=current_value)
+    if new_value:
+        tree2.set(item, column, new_value)
+
+
+tree2.bind("<Double-1>", tree2_on_double_click)
+
+
 def failo_narsykle():
     pavadinimas = filedialog.askopenfilename(initialdir="/",
                                              title="Select A File",
